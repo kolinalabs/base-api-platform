@@ -1,0 +1,47 @@
+version: '3.4'
+
+x-cache:
+  &cache
+  cache_from:
+    - ${CONTAINER_REGISTRY_BASE}/php:api-plaftorm-1.0
+    - ${CONTAINER_REGISTRY_BASE}/nginx:api-plaftorm-1.0
+
+services:
+  php:
+    image: ${CONTAINER_REGISTRY_BASE}/php:api-plaftorm-1.0
+    build:
+      context: ./api
+      target: php
+      <<: *cache
+    depends_on:
+      - db
+    volumes:
+      - ./api:/srv/api:rw,cached
+      - ./api/var:/srv/api/var:rw
+
+  api:
+    image: ${CONTAINER_REGISTRY_BASE}/nginx:api-plaftorm-1.0
+    build:
+      context: ./api
+      target: nginx
+      <<: *cache
+    depends_on:
+      - php
+    volumes:
+      - ./api/public:/srv/api/public:ro
+    ports:
+      - "8080:80"
+
+  db:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=api
+      - POSTGRES_USER=api-platform
+      - POSTGRES_PASSWORD=!ChangeMe!
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data: {}
