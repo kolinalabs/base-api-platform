@@ -182,6 +182,9 @@
             "config/packages/ramsey_uuid_doctrine.yaml"
         ]
     },
+    "roave/security-advisories": {
+        "version": "dev-master"
+    },
     "sensiolabs/security-checker": {
         "version": "4.0",
         "recipe": {
