@@ -19,6 +19,7 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "hautelook/alice-bundle": "^2.5",
         "roave/security-advisories": "dev-master",
         "symfony/maker-bundle": "^1.12"
     },
